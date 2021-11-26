@@ -9,14 +9,16 @@
   * No magic comments.
   * No slowness.
   * No dependencies.
+  * Nothing added to your HTTP stack.
 
 Features:
 
-  * Part of your app.
+  * Struct definitions for OpenAPI 3.1.
   * Uses reflection to make OAS schemas from your types.
     * No more maintaining separate definitions by hand.
     * The source of truth is **your Go types**. Not some external YAML.
     * Examines _actual_ encoding behavior of your types, at runtime, to determine formats and nullability.
+    * Supports references and cyclic types.
   * Uses Go structs to describe what can't be reflected (routes, descriptions, etc).
     * Structured, statically-typed format.
     * Not an ad-hoc data format in breakage-prone comments.
@@ -27,7 +29,6 @@ Features:
     * Write to disk at build time.
     * Serve to clients at runtime.
     * Visualize using an external tool.
-  * Supports OpenAPI 3.1.
   * Tiny and dependency-free.
 
 See [limitations](#limitations) below.
@@ -128,6 +129,8 @@ The following features are currently missing, but may be added on demand:
   * Current plan: wait for Go generics, which are expected in 1.18 on Feb 2022.
 * Router integration.
   * Integration with `github.com/mitranim/rout` is planned.
+
+This package doesn't provide a UI. You're expected to feed the resulting JSON into one of **many** externally-available tools for Swagger UI / OpenAPI UI. Many tools can consume specs from a URL, such as your server's endpoint for serving the spec.
 
 ## License
 

@@ -291,6 +291,15 @@ Shortcut for registering an "op" at the given path and method, via
 `(*oas.Path).Method`.
 */
 func (self Paths) Route(path, meth string, op Op) Paths {
+	/**
+	Tentative. This is useful for many UI visualizers, which would otherwise try
+	to generate a summary from the description, which is annoying in practice.
+	May revise.
+	*/
+	if op.Sum == `` {
+		op.Sum = path
+	}
+
 	val := self[path]
 	val.Method(meth, op)
 	self[path] = val
@@ -773,6 +782,8 @@ type Flow struct {
 // Short for "secutity requirement".
 type SecReq map[string][]string
 
+// Same as `interface{}`. Represents "any type" in some OAS definitions.
 type Any interface{}
 
+// Represents maps of "any type" in some OAS definitions.
 type Anys map[string]Any

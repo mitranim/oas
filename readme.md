@@ -4,8 +4,9 @@
 
 **Non**-features:
 
-  * No code generation.
   * No CLI.
+  * No code parsing.
+  * No code generation.
   * No magic comments.
   * No slowness.
   * No dependencies.
@@ -26,7 +27,7 @@ Features:
   * The docs are Go structures. You can do anything with them:
     * Inspect and modify in Go.
     * Encode as JSON or YAML.
-    * Write to disk at build time.
+    * Write to disk or stdout at build time.
     * Serve to clients at runtime.
     * Visualize using an external tool.
   * Tiny and dependency-free.
@@ -37,8 +38,8 @@ API docs: https://pkg.go.dev/github.com/mitranim/oas
 
 ## Why
 
-* No external CLI.
-  * Automatically downloaded like other libraries.
+* No external CLI. Just a library.
+  * Automatically downloaded by Go.
   * Automatically versioned via `go.mod`.
   * No manual CLI installation.
   * No manual CLI versioning.
@@ -52,7 +53,7 @@ API docs: https://pkg.go.dev/github.com/mitranim/oas
   * No bloating your commits and Git diffs with generated JSON/YAML.
   * Can generate and serve OAS purely at runtime.
 * No figuring out how to deal with built artifacts.
-  * If you want built artifacts, it's an option. _Your Go app_ is a CLI tool. Add a command to write its OAS to disk as JSON, and run that at build time.
+  * If you want built artifacts, it's an option. _Your Go app_ is a CLI tool. Add a command to encode its OAS as JSON, and run that at build time.
 
 ## Usage
 

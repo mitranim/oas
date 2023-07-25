@@ -116,8 +116,8 @@ func (self *Doc) schemaArray(sch *Schema, typ r.Type) {
 	name := typeName(typ)
 	defer self.setSchema(name, Schema{}).outlineSchema(sch)
 
-	// sch.MaxItems = uint64(typ.Len())
-	// sch.MinItems = uint64(typ.Len())
+	sch.MaxItems = uint64(typ.Len())
+	sch.MinItems = uint64(typ.Len())
 	sch.Items = self.TypeSchema(typ.Elem()).Opt()
 }
 
@@ -327,18 +327,22 @@ func (*Doc) schemaTextInspectFormat(sch *Schema, val string) {
 
 	if isDateIso8601(val) {
 		sch.Format = FormatDate
+		return
 	}
 
 	if isTimeIso8601ExtendedT(val) || isTimeIso8601Extended(val) {
 		sch.Format = FormatTime
+		return
 	}
 
 	if isUuid(val) {
 		sch.Format = FormatUuid
+		return
 	}
 
 	if isDurationIso8601(val) {
 		sch.Format = FormatDuration
+		return
 	}
 }
 
@@ -356,6 +360,7 @@ func (self *Doc) setSchema(name string, sch Schema) *Doc {
 	return self
 }
 
+// Opposite of "inline". Term borrowed from compiler lingo.
 func (self *Doc) outlineSchema(sch *Schema) {
 	self.addSchema(*sch)
 	sch.setRef(sch.ValidTitle())

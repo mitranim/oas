@@ -1,6 +1,6 @@
 ## Overview
 
-"oas" is short for "**O**pen**A**PI **S**pec". Go package for generating OpenAPI docs at runtime.
+"oas" is short for "**O**pen**A**PI **S**pec". Go package that generates JSON-schemas and OpenAPI docs from Go types and structures, at runtime.
 
 **Non**-features:
 
@@ -14,9 +14,10 @@
 
 Features:
 
-  * Struct definitions for OpenAPI 3.1.
-  * Uses reflection to make OAS schemas from your types.
-    * No more maintaining separate definitions by hand.
+  * Generates JSON schema definitions from Go types and structures.
+  * Provides struct types describing OpenAPI 3.1.
+  * Uses reflection to make OAS schemas from your types and structures.
+    * No more maintaining type definitions by hand in separate files.
     * The source of truth is **your Go types**. Not some external YAML.
     * Examines _actual_ encoding behavior of your types, at runtime, to determine formats and nullability.
     * Supports references and cyclic types.

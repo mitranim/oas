@@ -92,13 +92,13 @@ func isUuidCanon(val string) bool {
 	if len(val) != (len(uuidCanonHyphens) + len(uuidCanonDigits)) {
 		return false
 	}
-	for _, i := range uuidCanonHyphens {
-		if val[i] != '-' {
+	for _, ind := range uuidCanonHyphens {
+		if val[ind] != '-' {
 			return false
 		}
 	}
-	for _, i := range uuidCanonDigits {
-		if !isHexDigit(val[i]) {
+	for _, ind := range uuidCanonDigits {
+		if !isHexDigit(val[ind]) {
 			return false
 		}
 	}
@@ -273,11 +273,11 @@ func nonZeroStruct(val r.Value) bool {
 func nonZeroStructPublic(val r.Value) bool {
 	typ := val.Type()
 
-	for i := range iter(typ.NumField()) {
-		if !isPublic(typ.Field(i).PkgPath) {
+	for ind := range iter(typ.NumField()) {
+		if !isPublic(typ.Field(ind).PkgPath) {
 			continue
 		}
-		if nonZero(val.Field(i)) {
+		if nonZero(val.Field(ind)) {
 			return true
 		}
 	}
@@ -288,17 +288,17 @@ func nonZeroStructPublic(val r.Value) bool {
 func nonZeroStructAny(val r.Value) bool {
 	typ := val.Type()
 
-	for i := range iter(typ.NumField()) {
-		elem := r.New(typ.Field(i).Type).Elem()
+	for ind := range iter(typ.NumField()) {
+		elem := r.New(typ.Field(ind).Type).Elem()
 
 		if nonZero(elem) {
 			/**
 			The "clearer" alternative would be to unset the "unexported" flag in the
-			field obtained by `val.Field(i)` and call `nonZero` on it directly. But
+			field obtained by `val.Field(ind)` and call `nonZero` on it directly. But
 			it seems to require hacks that involve magic constants, which may change
 			between language versions:
 
-				field := val.Field(i)
+				field := val.Field(ind)
 				(*[3]uintptr)(u.Pointer(&field))[2] &^= uintptr((1 << 5) | (1 << 6))
 				if nonZero(field) {return true}
 
@@ -308,7 +308,7 @@ func nonZeroStructAny(val r.Value) bool {
 			skip before even trying.
 			*/
 			memcpy(
-				val.Field(i).UnsafeAddr(),
+				val.Field(ind).UnsafeAddr(),
 				elem.UnsafeAddr(),
 				elem.Type().Size(),
 			)
@@ -387,8 +387,8 @@ func stringsEq(one, two []string) bool {
 	if len(one) != len(two) {
 		return false
 	}
-	for i := range one {
-		if one[i] != two[i] {
+	for ind := range one {
+		if one[ind] != two[ind] {
 			return false
 		}
 	}

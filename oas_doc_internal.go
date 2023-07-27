@@ -3,7 +3,6 @@ package oas
 import (
 	"encoding"
 	"encoding/json"
-	"fmt"
 	r "reflect"
 	"strings"
 )
@@ -87,13 +86,13 @@ func (*Doc) schemaString(sch *Schema, _ r.Type) { sch.Type = []string{TypeStr} }
 func (self *Doc) schemaPtr(sch *Schema, typ r.Type) {
 	self.schemaAny(sch, typ.Elem())
 
-	if !sch.HasRef() {
+	if sch.Ref == `` {
 		sch.Title = typeName(typ)
 		sch.Nullable()
 		return
 	}
 
-	refPath := sch.Ref.Ref
+	refPath := sch.Ref
 	tar, ok := self.GotSchema(refPath)
 	if !ok {
 		panic(errSchemaMissing(refPath))
@@ -156,8 +155,8 @@ func (self *Doc) schemaStruct(sch *Schema, typ r.Type) {
 }
 
 func (self *Doc) schemaStructProps(sch *Schema, typ r.Type) {
-	for i := range iter(typ.NumField()) {
-		field := typ.Field(i)
+	for ind := range iter(typ.NumField()) {
+		field := typ.Field(ind)
 
 		if !isPublic(field.PkgPath) || isTypeSkippable(field.Type) {
 			continue
@@ -368,38 +367,4 @@ func (self *Doc) outlineSchema(sch *Schema) {
 
 func (self *Doc) addSchema(sch Schema) {
 	self.Comps.Schemas.Init()[sch.ValidTitle()] = sch
-}
-
-func (self *Schema) setRef(val string) {
-	if val == `` {
-		panic(errMissingTitle)
-	}
-
-	if self.HasRef() {
-		panic(fmt.Errorf(
-			`[oas] attempted to componentize a schema that is already a reference: %#v`,
-			*self,
-		))
-	}
-
-	*self = RefSchema(val)
-}
-
-func (self *Schema) typeAdd(val string) {
-	if self.TypeHas(val) {
-		return
-	}
-
-	types := self.Type
-
-	/**
-	Motive: keep `TypeNull` at the end of the list, for better documentation
-	display. Visualizers may use the first type in the list when rendering
-	examples.
-	*/
-	if len(types) > 0 && types[len(types)-1] == TypeNull {
-		self.Type = append(types[:len(types)-1], val, TypeNull)
-	} else {
-		self.Type = append(types, val)
-	}
 }

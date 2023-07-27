@@ -402,6 +402,7 @@ func TestDoc_Route(t *testing.T) {
 			Paths: Paths{
 				`/`: Path{
 					Get: &Op{
+						Sum: `/`,
 						ReqBody: &Body{
 							Cont: MediaTypes{
 								ConTypeJson: MediaType{
@@ -431,9 +432,9 @@ func tDoc() Doc {
 		Info: &Info{
 			Title: `API documentation for my server`,
 			Desc: `
-		Documentation in JSON or YAML format,
-		compatible with the OpenAPI specification.
-		`,
+Documentation in JSON or YAML format,
+compatible with the OpenAPI specification.
+`,
 			Ver: `v3`,
 		},
 	}

@@ -22,21 +22,21 @@ pre-encoded response for each subsequent request.
 */
 
 func Benchmark_doc_schema_big(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+	for ind := 0; ind < b.N; ind++ {
 		var doc Doc
 		doc.Sch(&doc)
 	}
 }
 
 func Benchmark_doc_small(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+	for ind := 0; ind < b.N; ind++ {
 		tDoc()
 	}
 }
 
 func Benchmark_doc_schema_repeat(b *testing.B) {
 	var doc Doc
-	for i := 0; i < b.N; i++ {
+	for ind := 0; ind < b.N; ind++ {
 		doc.Sch((*Outer)(nil))
 	}
 }
@@ -47,13 +47,13 @@ func Benchmark_doc_big_json_encode(b *testing.B) {
 	enc := json.NewEncoder(io.Discard)
 	b.ResetTimer()
 
-	for i := 0; i < b.N; i++ {
+	for ind := 0; ind < b.N; ind++ {
 		try(enc.Encode(&doc))
 	}
 }
 
 func Benchmark_memcpy(b *testing.B) {
-	for i := 0; i < b.N; i++ {
+	for ind := 0; ind < b.N; ind++ {
 		var tar [4]byte
 		var src [4]byte = [4]byte{10, 20, 30, 40}
 
